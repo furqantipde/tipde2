@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tipdehub.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tipdehub.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://tipdehub.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://tipdehub.com/privacy-policy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tipdehub.com/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tipdehub.com/disclaimer</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Categories -->
+  <url><loc>https://tipdehub.com/category/text</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tipdehub.com/category/developer</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tipdehub.com/category/calculators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tipdehub.com/category/generators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tipdehub.com/category/image</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://tipdehub.com/category/pdf</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Text Tools -->
+  <url><loc>https://tipdehub.com/tools/word-counter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/case-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/remove-duplicate-lines</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/slug-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Developer Tools -->
+  <url><loc>https://tipdehub.com/tools/json-formatter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/base64-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/url-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/password-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Calculator Tools -->
+  <url><loc>https://tipdehub.com/tools/percentage-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/age-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/discount-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/profit-loss-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Generator Tools -->
+  <url><loc>https://tipdehub.com/tools/qr-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/favicon-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/color-palette-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Image Tools -->
+  <url><loc>https://tipdehub.com/tools/image-compressor</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/image-resizer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/image-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/image-cropper</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- PDF Tools -->
+  <url><loc>https://tipdehub.com/tools/jpg-to-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/pdf-to-jpg</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/merge-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/split-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://tipdehub.com/tools/compress-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+</urlset>
