@@ -1,0 +1,1 @@
+function e(e){if(e===0)return`0 B`;let t=[`B`,`KB`,`MB`,`GB`,`TB`],n=1024,r=Math.floor(Math.log(e)/Math.log(n));return`${parseFloat((e/n**r).toFixed(2))} ${t[r]}`}function t(e){return e<1?`${Math.ceil(e*60)} sec`:e<60?`${Math.round(e)} min`:`${Math.floor(e/60)}h ${Math.round(e%60)}m`}export{e as n,t};
