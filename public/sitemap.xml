@@ -2,61 +2,61 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Home -->
   <url>
-    <loc>https://furqantipde.github.io/tipdehub/</loc>
+    <loc>https://furqantipde.github.io/tipde2/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Pages -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/contact</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/contact</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 
   <!-- Categories -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/text</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/developer</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/calculators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/generators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/image</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/category/pdf</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/text</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/developer</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/calculators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/generators</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/image</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/category/pdf</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- Text Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/word-counter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/case-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/remove-duplicate-lines</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/slug-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/word-counter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/case-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/remove-duplicate-lines</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/slug-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Developer Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/json-formatter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/base64-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/url-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/password-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/json-formatter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/base64-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/url-encoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/password-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Calculator Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/percentage-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/age-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/discount-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/profit-loss-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/percentage-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/age-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/discount-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/profit-loss-calculator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Generator Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/qr-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/favicon-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/color-palette-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/qr-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/favicon-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/color-palette-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Image Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/image-compressor</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/image-resizer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/image-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/image-cropper</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/image-compressor</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/image-resizer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/image-converter</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/image-cropper</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- PDF Tools -->
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/jpg-to-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/pdf-to-jpg</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/merge-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/split-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://furqantipde.github.io/tipdehub/#/tools/compress-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/jpg-to-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/pdf-to-jpg</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/merge-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/split-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://furqantipde.github.io/tipde2/#/tools/compress-pdf</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
