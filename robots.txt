@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://furqantipde.github.io/tipde2/sitemap.xml
+Sitemap: https://www.tipde.online/sitemap.xml
