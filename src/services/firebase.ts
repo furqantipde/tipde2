@@ -1,26 +1,28 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
+import { getAnalytics } from 'firebase/analytics'
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
+  apiKey: "AIzaSyD1Dn8gxJYeHFiARgki1abucwe-CbSYS1w",
+  authDomain: "tipde-597cd.firebaseapp.com",
+  projectId: "tipde-597cd",
+  storageBucket: "tipde-597cd.firebasestorage.app",
+  messagingSenderId: "810138459417",
+  appId: "1:810138459417:web:d6a7f750f8fc84f842f988",
+  measurementId: "G-XWC68N7FHY"
 }
 
-// Only initialize if config is provided
-let app: ReturnType<typeof initializeApp> | null = null
-let auth: ReturnType<typeof getAuth> | null = null
-let db: ReturnType<typeof getFirestore> | null = null
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
 
-if (firebaseConfig.apiKey) {
-  app = initializeApp(firebaseConfig)
-  auth = getAuth(app)
-  db = getFirestore(app)
+// Analytics - only runs in browser (not during SSR/build)
+let analytics: ReturnType<typeof getAnalytics> | null = null
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app)
 }
 
-export { app, auth, db }
-export const isFirebaseConfigured = !!(firebaseConfig.apiKey && firebaseConfig.authDomain)
+export { app, auth, db, analytics }
+export const isFirebaseConfigured = true
