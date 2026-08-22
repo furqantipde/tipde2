@@ -23,3 +23,4 @@ if (firebaseConfig.apiKey) {
 }
 
 export { app, auth, db }
+export const isFirebaseConfigured = !!(firebaseConfig.apiKey && firebaseConfig.authDomain)
