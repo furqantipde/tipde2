@@ -7,7 +7,10 @@ import {
   GoogleAuthProvider,
   signOut,
   updateProfile,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
   type User,
+  type ConfirmationResult,
 } from 'firebase/auth'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { auth, db, isFirebaseConfigured } from '@/services/firebase'
@@ -19,6 +22,8 @@ interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<void>
   signUpWithEmail: (email: string, password: string, name: string) => Promise<void>
   signInWithGoogle: () => Promise<void>
+  sendOtp: (phoneNumber: string, containerId: string) => Promise<ConfirmationResult>
+  verifyOtp: (confirmationResult: ConfirmationResult, otp: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -29,10 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!auth) {
-      setLoading(false)
-      return
-    }
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser)
       setLoading(false)
@@ -41,51 +42,82 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const signInWithEmail = useCallback(async (email: string, password: string) => {
-    if (!auth) throw new Error('Firebase not configured')
     await signInWithEmailAndPassword(auth, email, password)
   }, [])
 
   const signUpWithEmail = useCallback(async (email: string, password: string, name: string) => {
-    if (!auth) throw new Error('Firebase not configured')
     const cred = await createUserWithEmailAndPassword(auth, email, password)
     if (name) {
       await updateProfile(cred.user, { displayName: name })
     }
     // Save user to Firestore
-    if (db) {
-      await setDoc(doc(db, 'users', cred.user.uid), {
-        name,
-        email,
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      name,
+      email,
+      createdAt: new Date().toISOString(),
+    })
+  }, [])
+
+  const signInWithGoogleFn = useCallback(async () => {
+    const provider = new GoogleAuthProvider()
+    const cred = await signInWithPopup(auth, provider)
+    // Save user to Firestore if new
+    const userRef = doc(db, 'users', cred.user.uid)
+    const snap = await getDoc(userRef)
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        name: cred.user.displayName || '',
+        email: cred.user.email || '',
         createdAt: new Date().toISOString(),
       })
     }
   }, [])
 
-  const signInWithGoogle = useCallback(async () => {
-    if (!auth) throw new Error('Firebase not configured')
-    const provider = new GoogleAuthProvider()
-    const cred = await signInWithPopup(auth, provider)
+  const sendOtp = useCallback(async (phoneNumber: string, containerId: string): Promise<ConfirmationResult> => {
+    // Clear any existing reCAPTCHA
+    const container = document.getElementById(containerId)
+    if (container) container.innerHTML = ''
+
+    const recaptcha = new RecaptchaVerifier(auth, containerId, {
+      size: 'normal',
+      callback: () => {},
+      'expired-callback': () => {},
+    })
+
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptcha)
+    return confirmationResult
+  }, [])
+
+  const verifyOtp = useCallback(async (confirmationResult: ConfirmationResult, otp: string) => {
+    const cred = await confirmationResult.confirm(otp)
     // Save user to Firestore if new
-    if (db) {
-      const userRef = doc(db, 'users', cred.user.uid)
-      const snap = await getDoc(userRef)
-      if (!snap.exists()) {
-        await setDoc(userRef, {
-          name: cred.user.displayName || '',
-          email: cred.user.email || '',
-          createdAt: new Date().toISOString(),
-        })
-      }
+    const userRef = doc(db, 'users', cred.user.uid)
+    const snap = await getDoc(userRef)
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        name: '',
+        phone: cred.user.phoneNumber || '',
+        createdAt: new Date().toISOString(),
+      })
     }
   }, [])
 
   const logout = useCallback(async () => {
-    if (!auth) throw new Error('Firebase not configured')
     await signOut(auth)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, isConfigured: isFirebaseConfigured, signInWithEmail, signUpWithEmail, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      isConfigured: isFirebaseConfigured,
+      signInWithEmail,
+      signUpWithEmail,
+      signInWithGoogle: signInWithGoogleFn,
+      sendOtp,
+      verifyOtp,
+      logout,
+    }}>
       {children}
     </AuthContext.Provider>
   )

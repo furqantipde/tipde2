@@ -13,6 +13,7 @@ import { DisclaimerPage } from '@/pages/DisclaimerPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { AuthPage } from '@/pages/AuthPage'
 import { SavedToolsPage } from '@/pages/SavedToolsPage'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -31,15 +32,16 @@ export default function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/category/:categoryId" element={<CategoryPage />} />
-            <Route path="/tools/:slug" element={<ToolPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/saved" element={<SavedToolsPage />} />
+            {/* Protected routes - require login */}
+            <Route path="/category/:categoryId" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
+            <Route path="/tools/:slug" element={<ProtectedRoute><ToolPage /></ProtectedRoute>} />
+            <Route path="/saved" element={<ProtectedRoute><SavedToolsPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

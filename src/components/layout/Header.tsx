@@ -25,7 +25,7 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  const initial = user?.displayName?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || '?'
+  const initial = user?.displayName?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || user?.phoneNumber?.slice(-1) || '?'
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-lg dark:border-gray-800 dark:bg-gray-900/80">
@@ -87,7 +87,7 @@ export function Header() {
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="w-8 h-8 rounded-full bg-primary-600 text-white text-sm font-bold flex items-center justify-center hover:bg-primary-700 transition-colors cursor-pointer"
-                title={user.displayName || user.email || 'User'}
+                title={user.displayName || user.email || user.phoneNumber || 'User'}
               >
                 {initial}
               </button>
@@ -97,7 +97,11 @@ export function Header() {
                     {user.displayName && (
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{user.displayName}</p>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                    {user.email ? (
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                    ) : user.phoneNumber ? (
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.phoneNumber}</p>
+                    ) : null}
                   </div>
                   <button
                     onClick={() => { logout(); setUserMenuOpen(false) }}
