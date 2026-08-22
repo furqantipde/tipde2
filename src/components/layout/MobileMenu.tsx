@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { X } from 'lucide-react'
+import { X, Heart } from 'lucide-react'
 import { categories } from '@/data/categories'
 
 interface MobileMenuProps {
@@ -49,6 +49,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             className="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             About
+          </Link>
+          <Link
+            to="/saved"
+            onClick={onClose}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            <Heart className="w-4 h-4 text-red-500" />
+            Saved Tools
           </Link>
         </nav>
       </div>

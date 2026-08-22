@@ -12,6 +12,7 @@ import { TermsOfServicePage } from '@/pages/TermsOfServicePage'
 import { DisclaimerPage } from '@/pages/DisclaimerPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { AuthPage } from '@/pages/AuthPage'
+import { SavedToolsPage } from '@/pages/SavedToolsPage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/saved" element={<SavedToolsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

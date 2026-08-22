@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon } from 'lucide-react'
+import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon, Heart } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { useAuth } from '@/context/AuthContext'
 import { SearchBar } from '@/components/search/SearchBar'
@@ -47,6 +47,10 @@ export function Header() {
           </Link>
           <Link to="/about" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             About
+          </Link>
+          <Link to="/saved" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 flex items-center gap-1">
+            <Heart className="w-3.5 h-3.5" />
+            Saved
           </Link>
         </nav>
 
