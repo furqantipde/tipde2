@@ -50,26 +50,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (name) {
       await updateProfile(cred.user, { displayName: name })
     }
-    // Save user to Firestore
-    await setDoc(doc(db, 'users', cred.user.uid), {
-      name,
-      email,
-      createdAt: new Date().toISOString(),
-    })
+    // Save user to Firestore (non-blocking)
+    try {
+      await setDoc(doc(db, 'users', cred.user.uid), {
+        name,
+        email,
+        createdAt: new Date().toISOString(),
+      })
+    } catch (err) {
+      console.warn('Failed to save user to Firestore:', err)
+    }
   }, [])
 
   const signInWithGoogleFn = useCallback(async () => {
     const provider = new GoogleAuthProvider()
     const cred = await signInWithPopup(auth, provider)
-    // Save user to Firestore if new
-    const userRef = doc(db, 'users', cred.user.uid)
-    const snap = await getDoc(userRef)
-    if (!snap.exists()) {
-      await setDoc(userRef, {
-        name: cred.user.displayName || '',
-        email: cred.user.email || '',
-        createdAt: new Date().toISOString(),
-      })
+    // Save user to Firestore if new (non-blocking)
+    try {
+      const userRef = doc(db, 'users', cred.user.uid)
+      const snap = await getDoc(userRef)
+      if (!snap.exists()) {
+        await setDoc(userRef, {
+          name: cred.user.displayName || '',
+          email: cred.user.email || '',
+          createdAt: new Date().toISOString(),
+        })
+      }
+    } catch (err) {
+      console.warn('Failed to save user to Firestore:', err)
     }
   }, [])
 
@@ -90,15 +98,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const verifyOtp = useCallback(async (confirmationResult: ConfirmationResult, otp: string) => {
     const cred = await confirmationResult.confirm(otp)
-    // Save user to Firestore if new
-    const userRef = doc(db, 'users', cred.user.uid)
-    const snap = await getDoc(userRef)
-    if (!snap.exists()) {
-      await setDoc(userRef, {
-        name: '',
-        phone: cred.user.phoneNumber || '',
-        createdAt: new Date().toISOString(),
-      })
+    // Save user to Firestore if new (non-blocking)
+    try {
+      const userRef = doc(db, 'users', cred.user.uid)
+      const snap = await getDoc(userRef)
+      if (!snap.exists()) {
+        await setDoc(userRef, {
+          name: '',
+          phone: cred.user.phoneNumber || '',
+          createdAt: new Date().toISOString(),
+        })
+      }
+    } catch (err) {
+      console.warn('Failed to save user to Firestore:', err)
     }
   }, [])
 
