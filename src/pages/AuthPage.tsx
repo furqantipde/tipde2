@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, User, Eye, EyeOff, Loader2, Phone, Shield } from 'lucide-react'
+import { Mail, Lock, User, Eye, EyeOff, Loader2, Phone, Shield, CheckCircle2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { Button } from '@/components/ui/Button'
 import type { ConfirmationResult } from 'firebase/auth'
@@ -17,6 +17,7 @@ export function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   // Phone auth state
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -28,6 +29,13 @@ export function AuthPage() {
   const { signInWithEmail, signUpWithEmail, signInWithGoogle, sendOtp, verifyOtp } = useAuth()
   const navigate = useNavigate()
 
+  const showSuccessAndRedirect = () => {
+    setSuccess(true)
+    setTimeout(() => {
+      navigate('/')
+    }, 1500)
+  }
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -38,7 +46,7 @@ export function AuthPage() {
       } else {
         await signUpWithEmail(email, password, name)
       }
-      navigate('/')
+      showSuccessAndRedirect()
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Something went wrong'
       if (msg.includes('user-not-found')) setError('No account found with this email.')
@@ -57,7 +65,7 @@ export function AuthPage() {
     setLoading(true)
     try {
       await signInWithGoogle()
-      navigate('/')
+      showSuccessAndRedirect()
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Google sign-in failed'
       if (msg.includes('popup-closed')) setError('Sign-in popup was closed. Please try again.')
@@ -100,7 +108,7 @@ export function AuthPage() {
     setLoading(true)
     try {
       await verifyOtp(confirmationResult, otp)
-      navigate('/')
+      showSuccessAndRedirect()
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'OTP verification failed'
       if (msg.includes('code-expired')) setError('OTP has expired. Please request a new one.')
@@ -117,6 +125,21 @@ export function AuthPage() {
     setPhoneStep('number')
     setOtp('')
     setConfirmationResult(null)
+  }
+
+  // Success screen
+  if (success) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-12">
+        <div className="rounded-xl border border-green-200 dark:border-green-800 bg-white dark:bg-gray-800 p-10 shadow-sm text-center">
+          <div className="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-5">
+            <CheckCircle2 className="w-10 h-10 text-green-500" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Verified!</h2>
+          <p className="text-gray-600 dark:text-gray-400">Sign-in successful. Redirecting...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
