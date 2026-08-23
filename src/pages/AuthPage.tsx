@@ -24,85 +24,220 @@ const scaleIn = {
   animate: { opacity: 1, scale: 1, transition: { duration: 0.3 } }
 }
 
-// Walking character SVG component
+// Enhanced realistic walking character
 function WalkingCharacter({ animationComplete }: { animationComplete: boolean }) {
   return (
     <motion.div
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
       initial={{ opacity: 1 }}
       animate={{ opacity: animationComplete ? 0 : 1 }}
-      transition={{ duration: 0.3, delay: animationComplete ? 0 : 0 }}
+      transition={{ duration: 0.3 }}
     >
+      {/* Shadow on ground */}
+      <motion.div
+        className="absolute bottom-20"
+        initial={{ x: -500, scale: 0.8, opacity: 0.3 }}
+        animate={{ 
+          x: 0,
+          scale: [0.8, 1, 0.8, 1, 0.8],
+          opacity: animationComplete ? 0 : 0.3
+        }}
+        transition={{ 
+          x: { duration: 2, ease: 'easeOut' },
+          scale: { duration: 0.6, repeat: 3, ease: 'easeInOut' }
+        }}
+      >
+        <ellipse cx="50" cy="0" rx="40" ry="8" fill="rgba(0,0,0,0.2)" />
+      </motion.div>
+
       {/* Character with suitcase */}
       <motion.div
         className="relative"
         initial={{ x: -500, y: 0 }}
         animate={{ 
-          x: animationComplete ? 0 : 0,
-          y: [0, -10, 0, -10, 0] // Walking bounce
+          x: 0,
+          y: [0, -8, 0, -8, 0] // Walking bounce
         }}
         transition={{ 
           x: { duration: 2, ease: 'easeOut' },
           y: { duration: 0.6, repeat: 3, ease: 'easeInOut' }
         }}
       >
-        {/* Suitcase */}
+        {/* Dust particles */}
+        {!animationComplete && (
+          <>
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute bottom-0 left-0 w-2 h-2 rounded-full bg-gray-400"
+                initial={{ opacity: 0, x: 0, y: 0 }}
+                animate={{ 
+                  opacity: [0, 0.6, 0],
+                  x: [-10 - i * 5, -20 - i * 10],
+                  y: [0, -10 - i * 3]
+                }}
+                transition={{ 
+                  duration: 0.8,
+                  repeat: 3,
+                  delay: i * 0.15,
+                  ease: 'easeOut'
+                }}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Enhanced Suitcase */}
         <motion.div
-          className="absolute -right-16 top-8"
-          initial={{ rotate: 0, y: 0 }}
+          className="absolute -right-20 top-12"
+          initial={{ rotate: 0, y: 0, x: 0 }}
           animate={{ 
-            rotate: animationComplete ? 45 : 0,
-            y: animationComplete ? 100 : 0,
-            x: animationComplete ? 50 : 0
+            rotate: animationComplete ? 720 : 0,
+            y: animationComplete ? 150 : 0,
+            x: animationComplete ? 100 : 0,
+            scale: animationComplete ? [1, 1.2, 0.8] : 1
           }}
-          transition={{ duration: 0.5, delay: animationComplete ? 0 : 1.8 }}
+          transition={{ duration: 0.8, delay: animationComplete ? 0 : 1.8, ease: 'easeOut' }}
         >
-          <svg width="60" height="50" viewBox="0 0 60 50" fill="none">
-            <rect x="5" y="15" width="50" height="30" rx="3" fill="#3B82F6" stroke="#1E40AF" strokeWidth="2"/>
-            <rect x="20" y="10" width="20" height="8" rx="2" fill="#1E40AF"/>
-            <line x1="15" y1="25" x2="45" y2="25" stroke="#1E40AF" strokeWidth="1.5"/>
-            <circle cx="15" cy="45" r="3" fill="#1E40AF"/>
-            <circle cx="45" cy="45" r="3" fill="#1E40AF"/>
+          <svg width="70" height="60" viewBox="0 0 70 60" fill="none">
+            {/* Suitcase body with gradient */}
+            <defs>
+              <linearGradient id="suitcaseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#60A5FA" />
+                <stop offset="100%" stopColor="#2563EB" />
+              </linearGradient>
+              <linearGradient id="suitcaseShine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
+                <stop offset="50%" stopColor="rgba(255,255,255,0)" />
+              </linearGradient>
+            </defs>
+            <rect x="5" y="18" width="60" height="38" rx="4" fill="url(#suitcaseGradient)" stroke="#1E40AF" strokeWidth="2"/>
+            {/* Handle */}
+            <rect x="25" y="8" width="20" height="12" rx="3" fill="#1E40AF"/>
+            <rect x="28" y="10" width="14" height="8" rx="2" fill="#3B82F6"/>
+            {/* Details */}
+            <line x1="15" y1="28" x2="55" y2="28" stroke="#1E40AF" strokeWidth="1.5"/>
+            <line x1="15" y1="38" x2="55" y2="38" stroke="#1E40AF" strokeWidth="1.5"/>
+            {/* Shine effect */}
+            <rect x="5" y="18" width="60" height="38" rx="4" fill="url(#suitcaseShine)"/>
+            {/* Wheels */}
+            <circle cx="18" cy="56" r="4" fill="#1E40AF"/>
+            <circle cx="18" cy="56" r="2" fill="#3B82F6"/>
+            <circle cx="52" cy="56" r="4" fill="#1E40AF"/>
+            <circle cx="52" cy="56" r="2" fill="#3B82F6"/>
+            {/* Lock */}
+            <rect x="32" y="32" width="6" height="8" rx="1" fill="#FCD34D" stroke="#F59E0B" strokeWidth="1"/>
           </svg>
         </motion.div>
 
-        {/* Character body */}
-        <svg width="100" height="150" viewBox="0 0 100 150" fill="none">
+        {/* Enhanced Character */}
+        <svg width="120" height="180" viewBox="0 0 120 180" fill="none">
+          <defs>
+            {/* Skin gradient */}
+            <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FDE68A" />
+              <stop offset="100%" stopColor="#FBBF24" />
+            </linearGradient>
+            {/* Shirt gradient */}
+            <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#60A5FA" />
+              <stop offset="100%" stopColor="#3B82F6" />
+            </linearGradient>
+            {/* Pants gradient */}
+            <linearGradient id="pantsGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#374151" />
+              <stop offset="100%" stopColor="#1F2937" />
+            </linearGradient>
+          </defs>
+
+          {/* Hair */}
+          <path d="M 35 15 Q 30 5 40 3 Q 50 0 60 3 Q 70 5 65 15 Z" fill="#4A3728" stroke="#3A2718" strokeWidth="1"/>
+          
           {/* Head */}
-          <circle cx="50" cy="25" r="15" fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+          <circle cx="50" cy="28" r="18" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="2"/>
+          
+          {/* Face details */}
           {/* Eyes */}
-          <circle cx="45" cy="22" r="2" fill="#1F2937"/>
-          <circle cx="55" cy="22" r="2" fill="#1F2937"/>
+          <ellipse cx="43" cy="25" rx="3" ry="4" fill="#1F2937"/>
+          <ellipse cx="57" cy="25" rx="3" ry="4" fill="#1F2937"/>
+          <circle cx="44" cy="24" r="1" fill="white"/>
+          <circle cx="58" cy="24" r="1" fill="white"/>
+          
+          {/* Eyebrows */}
+          <path d="M 38 20 Q 43 18 48 20" stroke="#4A3728" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          <path d="M 52 20 Q 57 18 62 20" stroke="#4A3728" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          
+          {/* Nose */}
+          <path d="M 50 28 L 48 32 L 52 32 Z" fill="#F59E0B" opacity="0.5"/>
+          
           {/* Smile */}
-          <path d="M 42 28 Q 50 32 58 28" stroke="#1F2937" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          {/* Body */}
-          <rect x="35" y="40" width="30" height="40" rx="3" fill="#3B82F6" stroke="#1E40AF" strokeWidth="2"/>
-          {/* Arms */}
+          <path d="M 42 33 Q 50 38 58 33" stroke="#1F2937" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          
+          {/* Ears */}
+          <ellipse cx="32" cy="28" rx="4" ry="6" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="1"/>
+          <ellipse cx="68" cy="28" rx="4" ry="6" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="1"/>
+
+          {/* Neck */}
+          <rect x="45" y="45" width="10" height="8" fill="url(#skinGradient)"/>
+
+          {/* Body/Shirt with collar */}
+          <rect x="30" y="53" width="40" height="50" rx="4" fill="url(#shirtGradient)" stroke="#1E40AF" strokeWidth="2"/>
+          {/* Collar */}
+          <path d="M 40 53 L 50 60 L 60 53" stroke="#1E40AF" strokeWidth="2" fill="none"/>
+          {/* Pocket */}
+          <rect x="35" y="65" width="12" height="10" rx="2" fill="#2563EB" stroke="#1E40AF" strokeWidth="1"/>
+          {/* Buttons */}
+          <circle cx="50" cy="70" r="1.5" fill="#1E40AF"/>
+          <circle cx="50" cy="80" r="1.5" fill="#1E40AF"/>
+          <circle cx="50" cy="90" r="1.5" fill="#1E40AF"/>
+
+          {/* Left Arm (swinging) */}
           <motion.g
-            animate={{ rotate: [0, -20, 0, -20, 0] }}
+            animate={{ rotate: [0, -25, 0, -25, 0] }}
             transition={{ duration: 0.6, repeat: 3, ease: 'easeInOut' }}
-            style={{ originX: '35px', originY: '45px' }}
+            style={{ originX: '30px', originY: '58px' }}
           >
-            <rect x="15" y="45" width="20" height="8" rx="4" fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+            <rect x="10" y="58" width="20" height="12" rx="6" fill="url(#shirtGradient)" stroke="#1E40AF" strokeWidth="2"/>
+            <rect x="5" y="68" width="15" height="25" rx="7" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="2"/>
+            {/* Hand */}
+            <circle cx="12" cy="93" r="6" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="2"/>
           </motion.g>
+
+          {/* Right Arm (holding suitcase) */}
           <motion.g
-            animate={{ rotate: [0, 20, 0, 20, 0] }}
+            animate={{ rotate: [0, 25, 0, 25, 0] }}
             transition={{ duration: 0.6, repeat: 3, ease: 'easeInOut' }}
-            style={{ originX: '65px', originY: '45px' }}
+            style={{ originX: '70px', originY: '58px' }}
           >
-            <rect x="65" y="45" width="20" height="8" rx="4" fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"/>
+            <rect x="70" y="58" width="20" height="12" rx="6" fill="url(#shirtGradient)" stroke="#1E40AF" strokeWidth="2"/>
+            <rect x="80" y="68" width="15" height="25" rx="7" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="2"/>
+            {/* Hand */}
+            <circle cx="88" cy="93" r="6" fill="url(#skinGradient)" stroke="#F59E0B" strokeWidth="2"/>
           </motion.g>
-          {/* Legs */}
+
+          {/* Left Leg (walking) */}
           <motion.g
-            animate={{ y: [0, -5, 0, -5, 0] }}
+            animate={{ rotate: [0, -15, 0, -15, 0] }}
             transition={{ duration: 0.6, repeat: 3, ease: 'easeInOut' }}
+            style={{ originX: '40px', originY: '103px' }}
           >
-            <rect x="38" y="80" width="10" height="30" rx="5" fill="#1F2937" stroke="#111827" strokeWidth="2"/>
-            <rect x="52" y="80" width="10" height="30" rx="5" fill="#1F2937" stroke="#111827" strokeWidth="2"/>
+            <rect x="33" y="103" width="14" height="40" rx="7" fill="url(#pantsGradient)" stroke="#111827" strokeWidth="2"/>
+            {/* Shoe */}
+            <ellipse cx="40" cy="145" rx="10" ry="5" fill="#7C3AED" stroke="#6D28D9" strokeWidth="2"/>
+            <ellipse cx="40" cy="143" rx="8" ry="3" fill="#8B5CF6"/>
           </motion.g>
-          {/* Shoes */}
-          <ellipse cx="43" cy="112" rx="8" ry="4" fill="#7C3AED" stroke="#6D28D9" strokeWidth="2"/>
-          <ellipse cx="57" cy="112" rx="8" ry="4" fill="#7C3AED" stroke="#6D28D9" strokeWidth="2"/>
+
+          {/* Right Leg (walking) */}
+          <motion.g
+            animate={{ rotate: [0, 15, 0, 15, 0] }}
+            transition={{ duration: 0.6, repeat: 3, ease: 'easeInOut' }}
+            style={{ originX: '60px', originY: '103px' }}
+          >
+            <rect x="53" y="103" width="14" height="40" rx="7" fill="url(#pantsGradient)" stroke="#111827" strokeWidth="2"/>
+            {/* Shoe */}
+            <ellipse cx="60" cy="145" rx="10" ry="5" fill="#7C3AED" stroke="#6D28D9" strokeWidth="2"/>
+            <ellipse cx="60" cy="143" rx="8" ry="3" fill="#8B5CF6"/>
+          </motion.g>
         </svg>
       </motion.div>
     </motion.div>
@@ -135,7 +270,7 @@ export function AuthPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIntroComplete(true)
-    }, 2500) // 2.5 seconds for walking animation
+    }, 2500)
     return () => clearTimeout(timer)
   }, [])
 
@@ -237,7 +372,7 @@ export function AuthPage() {
     setConfirmationResult(null)
   }
 
-  // Success screen with animated checkmark
+  // Success screen
   if (success) {
     return (
       <motion.div
@@ -253,30 +388,10 @@ export function AuthPage() {
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 10, delay: 0.2 }}
           >
-            <motion.div
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <CheckCircle2 className="w-10 h-10 text-green-500" />
-            </motion.div>
+            <CheckCircle2 className="w-10 h-10 text-green-500" />
           </motion.div>
-          <motion.h2
-            className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            Verified!
-          </motion.h2>
-          <motion.p
-            className="text-gray-600 dark:text-gray-400"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            Sign-in successful. Redirecting...
-          </motion.p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Verified!</h2>
+          <p className="text-gray-600 dark:text-gray-400">Sign-in successful. Redirecting...</p>
         </div>
       </motion.div>
     )
@@ -287,7 +402,7 @@ export function AuthPage() {
       {/* Walking Character Animation */}
       <WalkingCharacter animationComplete={introComplete} />
 
-      {/* Login Form - appears after intro */}
+      {/* Login Form */}
       <motion.div
         className="max-w-md mx-auto px-4 py-12"
         initial={{ opacity: 0 }}
@@ -309,7 +424,7 @@ export function AuthPage() {
           initial="initial"
           animate={introComplete ? "animate" : "initial"}
         >
-          {/* Method Tabs with smooth transitions */}
+          {/* Method Tabs */}
           <motion.div className="grid grid-cols-3 gap-2 mb-5" variants={staggerContainer} initial="initial" animate={introComplete ? "animate" : "initial"}>
             {(['google', 'email', 'phone'] as AuthMethod[]).map((method) => (
               <motion.button
@@ -341,7 +456,7 @@ export function AuthPage() {
             ))}
           </motion.div>
 
-          {/* Error message with animation */}
+          {/* Error message */}
           <AnimatePresence>
             {error && (
               <motion.div
@@ -356,9 +471,8 @@ export function AuthPage() {
             )}
           </AnimatePresence>
 
-          {/* Tab content with smooth transitions */}
+          {/* Tab content */}
           <AnimatePresence mode="wait">
-            {/* Google Method */}
             {activeMethod === 'google' && (
               <motion.div
                 key="google"
@@ -389,7 +503,6 @@ export function AuthPage() {
               </motion.div>
             )}
 
-            {/* Email Method */}
             {activeMethod === 'email' && (
               <motion.form
                 key="email"
@@ -451,12 +564,7 @@ export function AuthPage() {
 
                   <motion.div variants={fadeInUp}>
                     <Button type="submit" className="w-full" disabled={loading}>
-                      <motion.div
-                        animate={loading ? { rotate: 360 } : {}}
-                        transition={loading ? { duration: 1, repeat: Infinity, ease: 'linear' } : {}}
-                      >
-                        {loading ? <Loader2 className="w-4 h-4" /> : isLogin ? 'Sign In' : 'Create Account'}
-                      </motion.div>
+                      {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isLogin ? 'Sign In' : 'Create Account'}
                     </Button>
                   </motion.div>
 
@@ -476,7 +584,6 @@ export function AuthPage() {
               </motion.form>
             )}
 
-            {/* Phone Method */}
             {activeMethod === 'phone' && (
               <motion.div
                 key="phone"
