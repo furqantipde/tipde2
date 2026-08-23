@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { X, Heart } from 'lucide-react'
+import { X, Heart, LogOut, User as UserIcon } from 'lucide-react'
 import { categories } from '@/data/categories'
+import { useAuth } from '@/context/AuthContext'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -8,7 +9,11 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+  const { user, logout } = useAuth()
+
   if (!isOpen) return null
+
+  const initial = user?.displayName?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || user?.phoneNumber?.slice(-1) || '?'
 
   return (
     <>
@@ -22,6 +27,46 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
+
+        {/* User info / Sign in */}
+        {user ? (
+          <div className="mx-4 mt-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary-600 text-white text-sm font-bold flex items-center justify-center shrink-0">
+                {initial}
+              </div>
+              <div className="min-w-0">
+                {user.displayName && (
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{user.displayName}</p>
+                )}
+                {user.email ? (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                ) : user.phoneNumber ? (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.phoneNumber}</p>
+                ) : null}
+              </div>
+            </div>
+            <button
+              onClick={() => { logout(); onClose() }}
+              className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <div className="mx-4 mt-4">
+            <Link
+              to="/auth"
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors"
+            >
+              <UserIcon className="w-4 h-4" />
+              Sign In
+            </Link>
+          </div>
+        )}
+
         <nav className="p-4 space-y-1">
           <Link
             to="/"
