@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Heart, ArrowLeft } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Heart, ArrowLeft, Star, PlusCircle, MessageSquare } from 'lucide-react'
 import type { Tool } from '@/types/tool'
 import { useFavorites } from '@/hooks/useFavorites'
+import { useReviews } from '@/hooks/useReviews'
 import { getCategoryById } from '@/data/categories'
 import { getToolsByCategory } from '@/data/tools'
 import { Card } from './Card'
 import { Button } from './Button'
+import { ReviewCard } from '@/components/reviews/ReviewCard'
+import { WriteReviewModal } from '@/components/reviews/WriteReviewModal'
 
 interface ToolPageLayoutProps {
   tool: Tool
@@ -18,6 +22,9 @@ export function ToolPageLayout({ tool, children }: ToolPageLayoutProps) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const category = getCategoryById(tool.category)
   const relatedTools = getToolsByCategory(tool.category).filter((t) => t.id !== tool.id).slice(0, 4)
+
+  const { reviews, stats, likedIds, toggleLike, addReview } = useReviews(tool.id)
+  const [writeModalOpen, setWriteModalOpen] = useState(false)
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -39,6 +46,10 @@ export function ToolPageLayout({ tool, children }: ToolPageLayoutProps) {
                 {category.name}
               </span>
             )}
+            <div className="flex items-center gap-1 text-xs font-semibold text-amber-500 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-1 rounded-full border border-amber-200/50 dark:border-amber-800/40">
+              <Star className="w-3.5 h-3.5 fill-current" />
+              {stats.averageRating.toFixed(1)} ({stats.totalReviews} reviews)
+            </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{tool.name}</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">{tool.description}</p>
@@ -105,6 +116,68 @@ export function ToolPageLayout({ tool, children }: ToolPageLayoutProps) {
         </section>
       )}
 
+      {/* Community Ratings & Tool Reviews Section */}
+      <section className="mb-10 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
+              Community Reviews & Ratings
+            </h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Feedback specifically for {tool.name}
+            </p>
+          </div>
+
+          <button
+            onClick={() => setWriteModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+          >
+            <PlusCircle className="w-3.5 h-3.5" />
+            Review {tool.name}
+          </button>
+        </div>
+
+        {reviews.length === 0 ? (
+          <div className="p-6 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 text-center bg-gray-50/50 dark:bg-gray-800/40">
+            <MessageSquare className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              No reviews for {tool.name} yet
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+              Have you used this tool? Share your feedback to help others!
+            </p>
+            <button
+              onClick={() => setWriteModalOpen(true)}
+              className="px-3.5 py-1.5 rounded-lg bg-primary-600 text-white text-xs font-medium cursor-pointer"
+            >
+              Write First Review
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {reviews.map((r) => (
+                <ReviewCard
+                  key={r.id}
+                  review={r}
+                  isLiked={likedIds.includes(r.id)}
+                  onToggleLike={toggleLike}
+                />
+              ))}
+            </div>
+            <div className="text-center pt-2">
+              <Link
+                to="/reviews"
+                className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center gap-1"
+              >
+                View all site reviews →
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
+
       {/* Related Tools */}
       {relatedTools.length > 0 && (
         <section>
@@ -119,6 +192,15 @@ export function ToolPageLayout({ tool, children }: ToolPageLayoutProps) {
           </div>
         </section>
       )}
+
+      {/* Write Review Modal */}
+      <WriteReviewModal
+        isOpen={writeModalOpen}
+        onClose={() => setWriteModalOpen(false)}
+        onSubmit={addReview}
+        defaultToolId={tool.id}
+      />
     </div>
   )
 }
+

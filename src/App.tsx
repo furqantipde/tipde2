@@ -13,7 +13,9 @@ import { DisclaimerPage } from '@/pages/DisclaimerPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { AuthPage } from '@/pages/AuthPage'
 import { SavedToolsPage } from '@/pages/SavedToolsPage'
+import { ReviewPage } from '@/pages/ReviewPage'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { YouTubeProgressBar } from '@/components/ui/YouTubeProgressBar'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -26,6 +28,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <HashRouter>
+      <YouTubeProgressBar />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
         <Header />
@@ -34,6 +37,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/reviews" element={<ReviewPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

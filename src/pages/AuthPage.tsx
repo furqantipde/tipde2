@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Lock, User, Eye, EyeOff, Loader2, Phone, Shield, CheckCircle2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
@@ -263,8 +263,17 @@ export function AuthPage() {
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null)
   const recaptchaRef = useRef<HTMLDivElement>(null)
 
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle, sendOtp, verifyOtp } = useAuth()
+  const { user, loading: authLoading, signInWithEmail, signUpWithEmail, signInWithGoogle, sendOtp, verifyOtp } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const targetPath = (location.state as any)?.from?.pathname || '/'
+
+  // Auto-redirect if user is already authenticated
+  useEffect(() => {
+    if (user && !authLoading) {
+      navigate(targetPath, { replace: true })
+    }
+  }, [user, authLoading, navigate, targetPath])
 
   // Intro animation timing
   useEffect(() => {
@@ -277,8 +286,8 @@ export function AuthPage() {
   const showSuccessAndRedirect = () => {
     setSuccess(true)
     setTimeout(() => {
-      navigate('/')
-    }, 1500)
+      navigate(targetPath, { replace: true })
+    }, 800)
   }
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -291,8 +300,10 @@ export function AuthPage() {
       } else {
         await signUpWithEmail(email, password, name)
       }
+      setLoading(false)
       showSuccessAndRedirect()
     } catch (err: unknown) {
+      setLoading(false)
       const msg = err instanceof Error ? err.message : 'Something went wrong'
       if (msg.includes('user-not-found')) setError('No account found with this email.')
       else if (msg.includes('wrong-password')) setError('Incorrect password.')
@@ -300,8 +311,6 @@ export function AuthPage() {
       else if (msg.includes('weak-password')) setError('Password must be at least 6 characters.')
       else if (msg.includes('email-already-in-use')) setError('An account with this email already exists.')
       else setError(msg)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -310,13 +319,13 @@ export function AuthPage() {
     setLoading(true)
     try {
       await signInWithGoogle()
+      setLoading(false)
       showSuccessAndRedirect()
     } catch (err: unknown) {
+      setLoading(false)
       const msg = err instanceof Error ? err.message : 'Google sign-in failed'
       if (msg.includes('popup-closed')) setError('Sign-in popup was closed. Please try again.')
       else setError(msg)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -353,14 +362,14 @@ export function AuthPage() {
     setLoading(true)
     try {
       await verifyOtp(confirmationResult, otp)
+      setLoading(false)
       showSuccessAndRedirect()
     } catch (err: unknown) {
+      setLoading(false)
       const msg = err instanceof Error ? err.message : 'OTP verification failed'
       if (msg.includes('code-expired')) setError('OTP has expired. Please request a new one.')
       else if (msg.includes('invalid-verification-code')) setError('Incorrect OTP. Please try again.')
       else setError(msg)
-    } finally {
-      setLoading(false)
     }
   }
 
