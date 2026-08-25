@@ -1,12 +1,52 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { User, Mail, Phone, Calendar, Shield, Heart, LogOut, Edit3, CheckCircle2 } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Shield, Heart, LogOut, Edit3, CheckCircle2, Camera, X, Save } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { Button } from '@/components/ui/Button'
+
+const PROFILE_DATA_KEY = 'tipde_profile_data'
+
+interface ProfileData {
+  displayName?: string
+  avatar?: string
+  banner?: string
+}
+
+function getProfileData(): ProfileData {
+  try {
+    const raw = localStorage.getItem(PROFILE_DATA_KEY)
+    return raw ? JSON.parse(raw) : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveProfileData(data: ProfileData) {
+  try {
+    const existing = getProfileData()
+    localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify({ ...existing, ...data }))
+  } catch (e) {
+    console.error('Failed to save profile data', e)
+  }
+}
+
+function imageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
 
 export function ProfilePage() {
   const { user, logout } = useAuth()
   const [savedCount, setSavedCount] = useState(0)
+  const [editingName, setEditingName] = useState(false)
+  const [nameInput, setNameInput] = useState('')
+  const [profileData, setProfileData] = useState<ProfileData>({})
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+  const bannerInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     document.title = 'My Profile — TipdeHub'
@@ -16,14 +56,17 @@ export function ProfilePage() {
     } catch {
       setSavedCount(0)
     }
+    setProfileData(getProfileData())
   }, [])
 
   if (!user) return null
 
-  const displayName = user.displayName || 'User'
+  const customName = profileData.displayName
+  const displayName = customName || user.displayName || 'User'
   const email = user.email || ''
   const phone = user.phoneNumber || ''
-  const photoURL = user.photoURL || ''
+  const avatar = profileData.avatar || user.photoURL || ''
+  const banner = profileData.banner || ''
   const initial = displayName.charAt(0).toUpperCase() || email.charAt(0).toUpperCase() || phone.slice(-1) || '?'
   const joinDate = user.metadata?.creationTime
     ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -34,24 +77,112 @@ export function ProfilePage() {
   const isEmailUser = authProviders.includes('password')
   const isPhoneUser = authProviders.includes('phone')
 
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image must be under 2MB')
+      return
+    }
+    try {
+      const base64 = await imageToBase64(file)
+      const data = { avatar: base64 }
+      saveProfileData(data)
+      setProfileData(prev => ({ ...prev, ...data }))
+    } catch (err) {
+      console.error('Failed to upload avatar:', err)
+    }
+  }
+
+  const handleBannerChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 3 * 1024 * 1024) {
+      alert('Banner image must be under 3MB')
+      return
+    }
+    try {
+      const base64 = await imageToBase64(file)
+      const data = { banner: base64 }
+      saveProfileData(data)
+      setProfileData(prev => ({ ...prev, ...data }))
+    } catch (err) {
+      console.error('Failed to upload banner:', err)
+    }
+  }
+
+  const handleSaveName = () => {
+    if (nameInput.trim()) {
+      const data = { displayName: nameInput.trim() }
+      saveProfileData(data)
+      setProfileData(prev => ({ ...prev, ...data }))
+    }
+    setEditingName(false)
+  }
+
+  const handleStartEditName = () => {
+    setNameInput(displayName)
+    setEditingName(true)
+  }
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
+      {/* Hidden file inputs */}
+      <input
+        ref={avatarInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleAvatarChange}
+      />
+      <input
+        ref={bannerInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleBannerChange}
+      />
+
       {/* Profile Header Card */}
       <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
         {/* Banner */}
-        <div className="h-32 bg-gradient-to-r from-primary-500 to-primary-700 relative">
+        <div className="h-32 relative overflow-hidden">
+          {banner ? (
+            <img src={banner} alt="Banner" className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-r from-primary-500 to-primary-700" />
+          )}
+          {/* Change banner button */}
+          <button
+            onClick={() => bannerInputRef.current?.click()}
+            className="absolute top-3 right-3 p-2 rounded-lg bg-black/30 hover:bg-black/50 text-white transition-colors cursor-pointer"
+            title="Change banner"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
+          {/* Avatar */}
           <div className="absolute -bottom-12 left-6">
-            {photoURL ? (
-              <img
-                src={photoURL}
-                alt={displayName}
-                className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 object-cover shadow-md"
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-primary-600 text-white text-3xl font-bold flex items-center justify-center shadow-md">
-                {initial}
-              </div>
-            )}
+            <div className="relative group">
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt={displayName}
+                  className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 object-cover shadow-md"
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-primary-600 text-white text-3xl font-bold flex items-center justify-center shadow-md">
+                  {initial}
+                </div>
+              )}
+              {/* Change avatar button */}
+              <button
+                onClick={() => avatarInputRef.current?.click()}
+                className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition-colors cursor-pointer"
+                title="Change profile picture"
+              >
+                <Camera className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -60,9 +191,40 @@ export function ProfilePage() {
           <div className="flex items-start justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{displayName}</h1>
-                {user.emailVerified && (
-                  <CheckCircle2 className="w-5 h-5 text-primary-500" />
+                {editingName ? (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      className="text-2xl font-bold text-gray-900 dark:text-gray-100 bg-transparent border-b-2 border-primary-500 outline-none px-1"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSaveName()
+                        if (e.key === 'Escape') setEditingName(false)
+                      }}
+                    />
+                    <button onClick={handleSaveName} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                      <Save className="w-4 h-4 text-green-500" />
+                    </button>
+                    <button onClick={() => setEditingName(false)} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                      <X className="w-4 h-4 text-gray-400" />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{displayName}</h1>
+                    <button
+                      onClick={handleStartEditName}
+                      className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      title="Edit name"
+                    >
+                      <Edit3 className="w-4 h-4 text-gray-400" />
+                    </button>
+                    {user.emailVerified && (
+                      <CheckCircle2 className="w-5 h-5 text-primary-500" />
+                    )}
+                  </>
                 )}
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -89,17 +251,22 @@ export function ProfilePage() {
             Account Information
           </h2>
           <div className="space-y-4">
-            {displayName && displayName !== 'User' && (
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center">
-                  <User className="w-5 h-5 text-primary-500" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Full Name</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{displayName}</p>
-                </div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center">
+                <User className="w-5 h-5 text-primary-500" />
               </div>
-            )}
+              <div className="flex-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400">Full Name</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{displayName}</p>
+              </div>
+              <button
+                onClick={handleStartEditName}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                title="Edit name"
+              >
+                <Edit3 className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
 
             {email && (
               <div className="flex items-center gap-3">
