@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon, Heart, Star } from 'lucide-react'
+import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon, Heart, Star, Settings } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { useAuth } from '@/context/AuthContext'
 import { SearchBar } from '@/components/search/SearchBar'
@@ -107,6 +107,14 @@ export function Header() {
                       <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.phoneNumber}</p>
                     ) : null}
                   </div>
+                  <Link
+                    to="/profile"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
+                  >
+                    <Settings className="w-4 h-4" />
+                    Profile
+                  </Link>
                   <button
                     onClick={() => { logout(); setUserMenuOpen(false) }}
                     className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"

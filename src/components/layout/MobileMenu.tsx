@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { X, Heart, LogOut, User as UserIcon, Star } from 'lucide-react'
+import { X, Heart, LogOut, User as UserIcon, Star, Settings } from 'lucide-react'
 import { categories } from '@/data/categories'
 import { useAuth } from '@/context/AuthContext'
 
@@ -46,9 +46,17 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 ) : null}
               </div>
             </div>
+            <Link
+              to="/profile"
+              onClick={onClose}
+              className="mt-2 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors cursor-pointer"
+            >
+              <Settings className="w-4 h-4" />
+              View Profile
+            </Link>
             <button
               onClick={() => { logout(); onClose() }}
-              className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
+              className="mt-2 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               Sign Out

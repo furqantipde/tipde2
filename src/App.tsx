@@ -14,6 +14,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage'
 import { AuthPage } from '@/pages/AuthPage'
 import { SavedToolsPage } from '@/pages/SavedToolsPage'
 import { ReviewPage } from '@/pages/ReviewPage'
+import { ProfilePage } from '@/pages/ProfilePage'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { YouTubeProgressBar } from '@/components/ui/YouTubeProgressBar'
 
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="/category/:categoryId" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
             <Route path="/tools/:slug" element={<ProtectedRoute><ToolPage /></ProtectedRoute>} />
             <Route path="/saved" element={<ProtectedRoute><SavedToolsPage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

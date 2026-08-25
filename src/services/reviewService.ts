@@ -17,92 +17,20 @@ import type { Review, ReviewStats, NewReviewInput } from '@/types/review'
 const STORAGE_KEY = 'tipde_local_reviews'
 const LIKED_REVIEWS_KEY = 'tipde_liked_reviews'
 
-// Curated seed reviews for impressive initial presentation & fallback offline capability
-const SEED_REVIEWS: Review[] = [
-  {
-    id: 'seed-1',
-    userName: 'Alex Dev',
-    userRole: 'Full Stack Engineer',
-    userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
-    toolId: 'json-formatter',
-    toolName: 'JSON Formatter',
-    rating: 5,
-    title: 'Indispensable tool for daily web dev work!',
-    comment: 'The JSON Formatter and Validator saved me so much time while debugging REST APIs. The instant validation and dark theme styling are top tier.',
-    likes: 24,
-    createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    verified: true,
-  },
-  {
-    id: 'seed-2',
-    userName: 'Sarah Jenkins',
-    userRole: 'UI/UX Designer',
-    userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
-    toolId: 'image-converter',
-    toolName: 'Image Converter',
-    rating: 5,
-    title: 'Super fast browser-based WebP conversion',
-    comment: 'I love that all image processing happens 100% locally in the browser. Zero upload lag and total privacy guarantee. Highly recommend TipdeHub!',
-    likes: 18,
-    createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
-    verified: true,
-  },
-  {
-    id: 'seed-3',
-    userName: 'Michael Chen',
-    userRole: 'Product Manager',
-    userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
-    toolId: 'qr-generator',
-    toolName: 'QR Code Generator',
-    rating: 5,
-    title: 'Clean interface, zero ads, perfectly functional',
-    comment: 'Generating customized QR codes with SVG export without annoying paywalls or popups is so refreshing. Fantastic platform.',
-    likes: 15,
-    createdAt: new Date(Date.now() - 7 * 86400000).toISOString(),
-    verified: true,
-  },
-  {
-    id: 'seed-4',
-    userName: 'Elena Rostova',
-    userRole: 'Frontend Developer',
-    userAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150',
-    toolId: 'css-minifier',
-    toolName: 'CSS Minifier',
-    rating: 4,
-    title: 'Great utility set for optimizing frontend code',
-    comment: 'Calculators and CSS utilities work smoothly. Everything loads super fast and responsive on mobile devices too.',
-    likes: 12,
-    createdAt: new Date(Date.now() - 12 * 86400000).toISOString(),
-    verified: true,
-  },
-  {
-    id: 'seed-5',
-    userName: 'David K.',
-    userRole: 'Software Architect',
-    userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
-    toolId: 'pdf-compressor',
-    toolName: 'PDF Compressor',
-    rating: 5,
-    title: 'Privately compress confidential PDFs directly in client',
-    comment: 'No data leaves my machine, which is critical for compliance and security in our company. TipdeHub is our team default now.',
-    likes: 29,
-    createdAt: new Date(Date.now() - 15 * 86400000).toISOString(),
-    verified: true,
-  },
-]
+// No seed reviews - starts empty
+const SEED_REVIEWS: Review[] = []
 
 // Helper for local storage
 function getLocalReviews(): Review[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_REVIEWS))
-      return SEED_REVIEWS
+      return []
     }
     return JSON.parse(raw)
   } catch (e) {
     console.error('Failed to parse local reviews', e)
-    return SEED_REVIEWS
+    return []
   }
 }
 
@@ -166,14 +94,7 @@ export async function fetchReviews(): Promise<Review[]> {
           }
         })
         
-        // Merge with seed reviews if Firestore has few reviews
-        const combined = [...firestoreReviews]
-        SEED_REVIEWS.forEach((seed) => {
-          if (!combined.some((r) => r.id === seed.id)) {
-            combined.push(seed)
-          }
-        })
-        return combined
+        return firestoreReviews
       }
     }
   } catch (e) {
