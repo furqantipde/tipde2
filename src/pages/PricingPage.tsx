@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Check, X, Zap, Crown, Building2, Loader2 } from 'lucide-react'
+import { useEffect } from 'react'
+import { Check, X, Zap, Crown, Building2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const PLANS = [
   {
@@ -71,82 +71,29 @@ const PLANS = [
 
 export function PricingPage() {
   const { user } = useAuth()
-  const [processing, setProcessing] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     document.title = 'Pricing & Plans — TipdeHub'
   }, [])
 
-  const handleCheckout = async (planId: string) => {
+  const handleCheckout = (planId: string) => {
     if (!user) {
-      // Redirect to login
-      window.location.hash = '#/auth'
+      navigate('/auth', { state: { from: { pathname: `/checkout?plan=${planId}` } } })
       return
     }
 
     if (planId === 'free') {
-      // Free plan - no checkout needed
+      navigate('/')
       return
     }
 
     if (planId === 'enterprise') {
-      // Enterprise - redirect to contact
-      window.location.hash = '#/contact'
+      navigate('/contact')
       return
     }
 
-    setProcessing(planId)
-    try {
-      // Load payment provider script
-      const script = document.createElement('script')
-      script.src = 'https://js.paystack.co/v1/inline.js'
-      script.async = true
-      document.body.appendChild(script)
-
-      script.onload = () => {
-        const handler = (window as any).paystackSetup({
-          key: 'pk_live_4355470e-b9a1-4bf4-9577-dfdb38c1ceb0',
-          email: user.email || 'user@tipde.online',
-          amount: planId === 'pro' ? 999 : 2999, // Amount in kobo/cents
-          currency: 'USD',
-          ref: `tipde_${planId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-          metadata: {
-            custom_fields: [
-              {
-                display_name: 'Plan',
-                variable_name: 'plan',
-                value: planId,
-              },
-              {
-                display_name: 'User ID',
-                variable_name: 'user_id',
-                value: user.uid,
-              },
-            ],
-          },
-          callback: (response: any) => {
-            console.log('Payment successful:', response)
-            alert('Payment successful! Your plan has been upgraded.')
-            setProcessing(null)
-          },
-          onClose: () => {
-            setProcessing(null)
-          },
-        })
-
-        handler.openIframe()
-      }
-
-      script.onerror = () => {
-        console.error('Failed to load payment script')
-        setProcessing(null)
-        alert('Payment system unavailable. Please try again later.')
-      }
-    } catch (err) {
-      console.error('Checkout error:', err)
-      setProcessing(null)
-      alert('An error occurred. Please try again.')
-    }
+    navigate(`/checkout?plan=${planId}`)
   }
 
   return (
@@ -167,7 +114,6 @@ export function PricingPage() {
           {PLANS.map((plan) => {
             const Icon = plan.icon
             const isPopular = plan.popular
-            const isProcessing = processing === plan.id
 
             return (
               <div
@@ -240,18 +186,13 @@ export function PricingPage() {
                 {/* CTA Button */}
                 <button
                   onClick={() => handleCheckout(plan.id)}
-                  disabled={isProcessing}
-                  className={`w-full py-3 px-6 rounded-xl font-semibold text-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full py-3 px-6 rounded-xl font-semibold text-sm transition-all cursor-pointer ${
                     isPopular
                       ? 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-500/25'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
-                  {isProcessing ? (
-                    <Loader2 className="w-5 h-5 animate-spin mx-auto" />
-                  ) : (
-                    plan.cta
-                  )}
+                  {plan.cta}
                 </button>
               </div>
             )
