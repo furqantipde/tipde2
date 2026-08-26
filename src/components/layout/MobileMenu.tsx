@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { X, Heart, LogOut, User as UserIcon, Star, Settings } from 'lucide-react'
+import { X, Heart, LogOut, User as UserIcon, Star, Settings, Crown } from 'lucide-react'
 import { categories } from '@/data/categories'
 import { useAuth } from '@/context/AuthContext'
 
@@ -96,6 +96,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               {cat.name}
             </Link>
           ))}
+          <Link
+            to="/pricing"
+            onClick={onClose}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+          >
+            <Crown className="w-4 h-4 text-amber-500" />
+            Pricing
+          </Link>
           <Link
             to="/about"
             onClick={onClose}

@@ -15,6 +15,7 @@ import { AuthPage } from '@/pages/AuthPage'
 import { SavedToolsPage } from '@/pages/SavedToolsPage'
 import { ReviewPage } from '@/pages/ReviewPage'
 import { ProfilePage } from '@/pages/ProfilePage'
+import { PricingPage } from '@/pages/PricingPage'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { YouTubeProgressBar } from '@/components/ui/YouTubeProgressBar'
 
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/reviews" element={<ReviewPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsOfServicePage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon, Heart, Star, Settings } from 'lucide-react'
+import { Search, Sun, Moon, Menu, X, LogOut, User as UserIcon, Heart, Star, Settings, Crown } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { useAuth } from '@/context/AuthContext'
 import { SearchBar } from '@/components/search/SearchBar'
@@ -44,6 +44,10 @@ export function Header() {
           </Link>
           <Link to="/category/developer" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             Developer
+          </Link>
+          <Link to="/pricing" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 flex items-center gap-1">
+            <Crown className="w-3.5 h-3.5 text-amber-500" />
+            Pricing
           </Link>
           <Link to="/reviews" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 flex items-center gap-1">
             <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
